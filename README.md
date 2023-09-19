@@ -33,6 +33,7 @@ NFTx Port is a marketplace protocol for safely and efficiently buying and sellin
 /TBI
 
 ## Deployments
+
 ### Deployments By EVM Chain
 
 <table>
@@ -49,10 +50,9 @@ NFTx Port is a marketplace protocol for safely and efficiently buying and sellin
 <tr>
 <td>Sepolia</td>
 <td>Not Deployed</td>
-<td>Not Deployed</td>
+<td>[0xA416416725fF75bf440A91A1cEefE9b7F0c8B046](https://sepolia.etherscan.io/address/0xA416416725fF75bf440A91A1cEefE9b7F0c8B046)</td>
 </tr>
 </table>
-
 
 ## Diagram
 

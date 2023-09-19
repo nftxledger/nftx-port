@@ -1,11 +1,49 @@
-import { ethers, upgrades } from "hardhat";
+import { ethers, run, upgrades } from "hardhat";
 
 async function main() {
-  const NFTx = await ethers.getContractFactory("NFTxPort");
-  const NFTxDeploy = await upgrades.deployProxy(NFTx, { kind: "uups" });
-  await NFTxDeploy.waitForDeployment();
+  const NFTx = await ethers.getContractFactory("NFTxPort"); // Get the contract factory
+  const nftxDeploy = await upgrades.deployProxy(NFTx, { kind: "uups" }); // Deploy the contract as a proxy
+  await nftxDeploy.waitForDeployment(); // Wait for the deployment to be mined
 
-  console.log(`Contract deployed to ${await NFTxDeploy.getAddress()}`);
+  const address = await nftxDeploy.getAddress();
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(
+    address
+  );
+
+  // Display Proxy address
+  console.log(`Proxy Contract deployed to ${address}`);
+
+  // Display implementation address
+  console.log(`Implementation Contract deployed to ${implementationAddress}`);
+
+  // verify contracts on etherscan
+  await verifyContracts(address, implementationAddress);
+}
+
+async function verifyContracts(address: String, implementationAddress: String) {
+  const network = await ethers.provider.getNetwork();
+  if (network.name !== "hardhat") {
+    // Wait for 30 seconds for etherscan to index the contract
+    await new Promise((resolve) => setTimeout(resolve, 30000));
+
+    // verify contracts on etherscan
+    console.log(`Verifying contracts`);
+
+    // verify implementation contract on etherscan
+    await run("verify:verify", {
+      address: implementationAddress,
+      constructorArguments: [],
+    });
+
+    // Wait for 30 seconds for etherscan to verify the contract
+    await new Promise((resolve) => setTimeout(resolve, 30000));
+
+    // verify proxy contract on etherscan
+    await run("verify:verify", {
+      address,
+      constructorArguments: [],
+    });
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

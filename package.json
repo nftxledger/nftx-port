@@ -57,7 +57,10 @@
     "lint:check:eslint": "eslint . --ext js,ts",
     "lint:fix": "yarn lint:fix:format && yarn lint:fix:eslint",
     "lint:fix:format": "prettier --write **.{sol,js,ts}",
-    "lint:fix:eslint": "eslint --fix . --ext js,ts"
+    "lint:fix:eslint": "eslint --fix . --ext js,ts",
+    "deploy:hardhat": "yarn build && hardhat run scripts/deployProxy.ts --network hardhat --config ./hardhat.config.ts",
+    "deploy:sepolia": "yarn build && hardhat run scripts/deployProxy.ts --network sepolia --config ./hardhat.config.ts",
+    "upgrade:sepolia": "yarn build && hardhat run scripts/upgradeProxy.ts --network sepolia --config ./hardhat.config.ts"
   },
   "lint-staged": {
     "*.sol": "prettier --write",
